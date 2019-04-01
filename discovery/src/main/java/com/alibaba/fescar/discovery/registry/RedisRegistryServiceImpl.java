@@ -68,7 +68,7 @@ public class RedisRegistryServiceImpl implements RegistryService<RedisListener> 
         new NamedThreadFactory("RedisRegistryService", 1));
 
     private RedisRegistryServiceImpl() {
-        Configuration fescarConfig = ConfigurationFactory.getInstance();
+        Configuration fescarConfig = ConfigurationFactory.FILE_INSTANCE;
         this.clusterName = fescarConfig.getConfig(REDIS_FILEKEY_PREFIX + REGISTRY_CLUSTER_KEY, DEFAULT_CLUSTER);
         String password = fescarConfig.getConfig(getRedisPasswordFileKey());
         String serverAddr = fescarConfig.getConfig(getRedisAddrFileKey());
@@ -115,7 +115,7 @@ public class RedisRegistryServiceImpl implements RegistryService<RedisListener> 
         if (minEvictableIdleTimeMillis > 0) {
             redisConfig.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
         }
-        if (StringUtils.isEmpty(password)) {
+        if (StringUtils.isNullOrEmpty(password)) {
             jedisPool = new JedisPool(redisConfig, host, port, Protocol.DEFAULT_TIMEOUT, null, db);
         } else {
             jedisPool = new JedisPool(redisConfig, host, port, Protocol.DEFAULT_TIMEOUT, password, db);
